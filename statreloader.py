@@ -2,11 +2,14 @@ import inspect
 
 
 class StateReloader(object):
+    STOP_STATE = StateReloader(-1, None)
     def __init__(self, entry, states: dict):
         self._state = entry
         self._states = states
     
     def reload(self, *args, **kwargs):
+        if self._state == StateReloader.STOP_STATE:
+            return
         state = self._states.get(self._state)
         if state is None:
             raise Exception("State {} not found".format(self._state))
